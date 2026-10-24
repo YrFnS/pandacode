@@ -178,6 +178,7 @@ fn provider_name(id: &str) -> &str {
         "kimi" => "Kimi",
         "glm" => "GLM",
         "opencode" => "OpenCode",
+        "kilo" => "Kilo",
         "antigravity" => "Antigravity",
         other => other,
     }
