@@ -28,6 +28,28 @@ test('provider connections expose Kilo models, approval modes and executable set
   await page.screenshot({ path: testInfo.outputPath('kilo-provider-settings.png') });
 });
 
+test('provider connections show the Kilo logo in light and dark themes', async ({ page }, testInfo) => {
+  await page.goto('/');
+  for (const theme of ['light', 'dark']) {
+    await page.evaluate(theme => localStorage.setItem('pandacode.theme', theme), theme);
+    await page.reload();
+    await page.getByRole('button', { name: 'Choose harness and model', exact: true }).click();
+    const picker = page.getByRole('dialog', { name: 'Harness and model', exact: true });
+    const option = picker.locator('.model-menu-option[data-provider="kilo"][data-model="default"]');
+    const logo = option.locator('svg.provider-logo[data-provider="kilo"]');
+    await expect(option).toBeVisible();
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute('aria-hidden', 'true');
+    const colors = await logo.evaluate(svg => ({
+      fill: getComputedStyle(svg.querySelector('path')!).fill,
+      text: getComputedStyle(svg).color,
+    }));
+    expect(colors.fill).toBe(colors.text);
+    await option.scrollIntoViewIfNeeded();
+    await picker.screenshot({ path: testInfo.outputPath(`kilo-${theme}.png`) });
+  }
+});
+
 test('provider connections show Claude credential conflicts and let users prefer the saved login', async ({ page }) => {
   await page.route('**/src/preview.ts*', async route => {
     const response = await route.fetch();
