@@ -20,6 +20,7 @@ embedded editor engine.
 <p align="center">
   <b>Download:</b>
   <a href="https://github.com/aicodeking/pandacode/releases/latest/download/PandaCode-macOS-arm64.dmg">macOS (Apple silicon)</a> ·
+  <a href="https://github.com/aicodeking/pandacode/releases/latest/download/PandaCode-macOS-x64.dmg">macOS (Intel)</a> ·
   <a href="https://github.com/aicodeking/pandacode/releases/latest/download/PandaCode-Windows-x64-setup.exe">Windows x64</a> ·
   <a href="https://github.com/aicodeking/pandacode/releases/latest/download/PandaCode-Windows-arm64-setup.exe">Windows arm64</a> ·
   <a href="https://github.com/aicodeking/pandacode/releases/latest/download/PandaCode-Linux-x86_64.AppImage">Linux x64</a> ·
@@ -168,8 +169,11 @@ on macOS, or `brew install aicodeking/pandacode/pandacode` on Linux
 
 Release builds are not code-signed, so your OS will warn the first time:
 
-- **macOS:** if macOS says it cannot verify PandaCode, open **System Settings →
-  Privacy & Security** and click **Open Anyway**.
+- **macOS:** the build carries an ad-hoc signature and is not notarized, so macOS
+  refuses to open it, and **Open Anyway** in **System Settings → Privacy &
+  Security** does not always clear it. Run `xattr -dr com.apple.quarantine
+  /Applications/PandaCode.app` once instead; `npx pandacode` signs the app locally
+  and needs no such step.
 - **Windows:** if SmartScreen appears, click **More info → Run anyway**.
 - **Linux:** `chmod +x PandaCode-Linux-x86_64.AppImage` (or `-aarch64`), then run it. Some
   distributions need FUSE 2 (`libfuse2`), or set `APPIMAGE_EXTRACT_AND_RUN=1`.
